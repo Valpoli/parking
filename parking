@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+
+
+namespace parking
+{
+    class Program
+    {
+        public class Vehicule
+        {
+            public string name { get; set; }
+            public double timeofarrival { get; set; }
+
+            public Vehicule(string _name, double _time)
+            {
+                name = _name;
+                timeofarrival = _time;
+            }
+
+            public double Taxes()
+            {
+                double res = 2;
+                double time2 = timeofarrival-3;
+                if (time2 > 0)
+                {
+                    res += time2 * 0.5;
+                    if (res > 10)
+                    {
+                        res = 10;
+                    }
+                }
+                return res;
+            }
+
+            public void showTaxes()
+            {
+                Console.WriteLine("taxe for {0} : {1}", name, Taxes());
+            }
+        }
+        
+        public class Parking
+        {
+            public List<Vehicule> vehicules { get; set; }
+            public double hour { get; set; }
+
+            public Parking(List<Vehicule> _vehicules, double _hour)
+            {
+                vehicules = _vehicules;
+                hour = _hour;
+            }
+
+            public void calculateCharges()
+            {
+                double totalIncome = 0;
+                foreach (Vehicule voiture in vehicules)
+                {
+                    voiture.showTaxes();
+                    totalIncome += voiture.Taxes();
+                }
+                Console.WriteLine("Total income : {0}",totalIncome);
+            }
+        }
+
+        public static double howlong(double h1, double h2)
+        {
+            double res = h1 - h2;
+            if (res < 0)
+            {
+                res += 24;
+            }
+            res = Math.Floor(res);
+            return res;
+        }
+        class program
+        {
+            static void Main(string[] args)
+            {
+                double actualhour = 13;
+                List<Vehicule> vehicules = new List<Vehicule>();
+                vehicules.Add(new Vehicule("v1", howlong(15, actualhour)));
+                vehicules.Add(new Vehicule("v1", howlong(23, actualhour)));
+                vehicules.Add(new Vehicule("v1", howlong(10, actualhour)));
+                Parking parking = new Parking(vehicules, actualhour);
+                parking.calculateCharges();
+            }
+        }
+    }
+}
